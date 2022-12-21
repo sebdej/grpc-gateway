@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package collections.v1;
+
+import "google/protobuf/struct.proto";
+import "google/api/annotations.proto";
+
+service CollectionService {
+	rpc GetCollection(GetCollectionRequest) returns (GetCollectionResponse) {
+    option (google.api.http) = {
+      // Route to this method from GET requests to /api/v1/collections/name
+      get: "/api/v1/collections/{name}"
+    };
+  }
+}
+
+message GetCollectionRequest {
+	string name = 1;
+	string page_token = 2;
+	int32 limit = 3;
+}
+
+message Edge {
+  google.protobuf.Value node = 1;
+  string cursor = 2;
+  google.protobuf.Value schema = 3;
+  google.protobuf.Value ui = 4;
+}
+
+message GetCollectionResponse {
+  repeated Edge edge = 1;
+  google.protobuf.Value default_schema = 2;
+  string next_page_token = 3;
+}
